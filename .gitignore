@@ -1,0 +1,16 @@
+# Node
+node_modules/
+npm-debug.log
+.DS_Store
+
+# Env & local configs
+.env
+.env.local
+.env.*.local
+
+# OS / IDE
+*.log
+*.tmp
+*.swp
+.vscode/
+.idea/
