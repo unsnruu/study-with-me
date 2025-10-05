@@ -1,19 +1,22 @@
 import "dotenv/config";
 import { REST, Routes } from "discord.js";
-import ping from "./commands/ping.js";
+import { commands } from "./commands/index.js";
 
-const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+const commandsData = commands.map(command => command.data.toJSON());
 
-try {
-  console.log("⬆️  Registering guild commands...");
-  await rest.put(
-    Routes.applicationGuildCommands(
-      process.env.CLIENT_ID,
-      process.env.GUILD_ID
-    ),
-    { body: [ping.data.toJSON()] }
-  );
-  console.log("✅ Commands registered");
-} catch (e) {
-  console.error(e);
-}
+const rest = new REST().setToken(process.env.TOKEN);
+
+(async () => {
+    try {
+        console.log(`Started refreshing ${commandsData.length} application (/) commands.`);
+
+        const data = await rest.put(
+            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+            { body: commandsData },
+        );
+
+        console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    } catch (error) {
+        console.error(error);
+    }
+})();
