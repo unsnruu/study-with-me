@@ -2,9 +2,9 @@
   "name": "discord-bot-studywithme",
   "version": "1.0.0",
   "description": "",
-  "main": "src/bot.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node src/bot.js",
+    "start": "node src/index.js",
     "register": "node src/deploy-commands.js"
   },
   "repository": {
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/unsnruu/study-with-me#readme",
   "dependencies": {
     "discord.js": "^14.22.1",
-    "dotenv": "^17.2.3"
+    "dotenv": "^17.2.3",
+    "node-cron": "^3.0.3"
   }
 }
