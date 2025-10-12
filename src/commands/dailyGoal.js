@@ -4,30 +4,14 @@ export default {
   data: new SlashCommandBuilder()
     .setName("dailygoal")
     .setNameLocalizations({ ko: "일일목표" })
-    .setDescription("Set your daily goal with a structured template!")
+    .setDescription("Set your daily goal!")
     .setDescriptionLocalizations({ ko: "오늘의 목표를 설정합니다." })
-    .addUserOption((option) =>
-      option
-        .setName("user")
-        .setNameLocalizations({ ko: "사용자" })
-        .setDescription("The user to set the goal for.")
-        .setDescriptionLocalizations({ ko: "목표를 설정할 사용자입니다." })
-        .setRequired(true)
-    )
     .addStringOption((option) =>
       option
         .setName("main-goal")
         .setNameLocalizations({ ko: "주요목표" })
         .setDescription("Your main goal for today.")
         .setDescriptionLocalizations({ ko: "오늘의 주요 목표입니다." })
-        .setRequired(true)
-    )
-    .addStringOption((option) =>
-      option
-        .setName("sub-goals")
-        .setNameLocalizations({ ko: "세부목표" })
-        .setDescription("Your detailed sub-goals.")
-        .setDescriptionLocalizations({ ko: "상세한 하위 목표입니다." })
         .setRequired(true)
     )
     .addStringOption((option) =>
@@ -56,18 +40,14 @@ export default {
   async execute(interaction) {
     await interaction.deferReply();
 
-    const user = interaction.options.getUser("user");
+    const user = interaction.user; // Get user from the interaction itself
     const mainGoal = interaction.options.getString("main-goal");
-    const subGoals = interaction.options.getString("sub-goals");
     const mood = interaction.options.getString("mood");
 
     const replyContent = `
-**✨<@${user.id}>님의 오늘의 목표✨**
+**✨${user.username}님의 오늘의 목표✨**
 
 **🎯 주요 목표: ${mainGoal}**
-
-🧩 **세부 목표:**
-${subGoals}
 
 💭 **오늘의 기분:** ${mood}
         `;
