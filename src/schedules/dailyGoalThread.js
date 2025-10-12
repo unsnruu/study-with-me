@@ -18,7 +18,7 @@ export const dailyGoalThreadJob = {
       const thread = await channel.threads.create({
         name: `🔥 ${dateString} | 오늘의 목표를 공유해주세요!`,
       });
-      await thread.send({ content: `@everyone 오늘의 목표를 공유하고 함께 달려봐요! 🔥` });
+      await thread.send({ content: `@everyone 오늘의 목표를 공유하고 함께 달려봐요! 🔥\\n\`/일일목표\` 명령어를 사용하면 더 쉽게 작성할 수 있어요.` });
       console.log(`✅ ${thread.name} 스레드를 성공적으로 생성했습니다.`);
     } catch (error) {
       console.error("스레드 생성 중 오류가 발생했습니다:", error);
