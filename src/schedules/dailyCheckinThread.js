@@ -18,6 +18,7 @@ export const dailyCheckinThreadJob = {
       const thread = await channel.threads.create({
         name: `✅ ${dateString} | 출석체크`,
       });
+      await channel.send({ content: `@here ${thread}가 생성되었습니다!` });
       console.log(`✅ ${thread.name} 스레드를 성공적으로 생성했습니다.`);
     } catch (error) {
       console.error("스레드 생성 중 오류가 발생했습니다:", error);
