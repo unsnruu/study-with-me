@@ -18,7 +18,7 @@ export const dailyAchievementThreadJob = {
       const thread = await channel.threads.create({
         name: `📈 ${dateString} | 오늘의 성과를 공유해주세요!`,
       });
-      await channel.send({ content: `@here ${thread}가 생성되었습니다!` });
+      await thread.send({ content: `@everyone 오늘의 성과를 공유하고 서로를 응원해주세요! 📈` });
       console.log(`✅ ${thread.name} 스레드를 성공적으로 생성했습니다.`);
     } catch (error) {
       console.error("스레드 생성 중 오류가 발생했습니다:", error);
