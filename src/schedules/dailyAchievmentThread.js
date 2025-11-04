@@ -9,7 +9,7 @@ const channelId = process.env.DAILY_ACHIEVEMENT_CHANNEL_ID;
 
 export const dailyAchievementThreadJob = {
   // 매주 월, 화, 목, 금 오전 9시 40분
-  schedule: "30 * * * * 1,2,4,5",
+  schedule: "40 16 * * 1,2,4,5",
   async task(client) {
     console.log("⏰ 스레드 생성 작업을 시작합니다.");
     try {
@@ -43,8 +43,7 @@ export const dailyAchievementThreadJob = {
           dailyGoalsSummary += `<@${goal.user_id}>님의 목표:\n`;
           dailyGoalsSummary += `1. ${goal.goal1}\n`;
           if (goal.goal2) dailyGoalsSummary += `2. ${goal.goal2}\n`;
-          if (goal.goal3) dailyGoalsSummary += `3. ${goal.goal3}\n`;
-          dailyGoalsSummary += `기분: ${goal.mood}\n\n`;
+          if (goal.goal3) dailyGoalsSummary += `3. ${goal.goal3}\n\n`;
         }
         await thread.send(dailyGoalsSummary);
         console.log(
