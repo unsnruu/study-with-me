@@ -8,8 +8,8 @@ const pool = new Pool({
 const channelId = process.env.DAILY_GOAL_CHANNEL_ID;
 
 export const dailyGoalThreadJob = {
-  // 매주 월, 화, 목, 금 오전 9시 40분
-  schedule: "40 9 * * 1,2,4,5",
+  // 매 30초마다 실행 (테스트용)
+  schedule: "*/30 * * * * *",
   async task(client) {
     console.log("⏰ 스레드 생성 및 목표 알림 작업을 시작합니다.");
     try {
@@ -32,7 +32,7 @@ export const dailyGoalThreadJob = {
       // DB에서 오늘 설정된 일일 목표 가져오기
       const guildId = channel.guild.id;
       const { rows: dailyGoals } = await pool.query(
-        'SELECT user_id, main_goal, sub_goal_1, sub_goal_2, mood FROM daily_goals WHERE guild_id = $1 AND created_at = CURRENT_DATE',
+        'SELECT user_id, goal1, goal2, goal3, mood FROM daily_goals WHERE guild_id = $1 AND created_at = CURRENT_DATE',
         [guildId]
       );
 
@@ -40,9 +40,9 @@ export const dailyGoalThreadJob = {
         let dailyGoalsSummary = '--- 오늘 목표를 설정한 멤버들 ---\n\n';
         for (const goal of dailyGoals) {
           dailyGoalsSummary += `<@${goal.user_id}>님의 목표:\n`;
-          dailyGoalsSummary += `  1. ${goal.main_goal}\n`;
-          if (goal.sub_goal_1) dailyGoalsSummary += `  2. ${goal.sub_goal_1}\n`;
-          if (goal.sub_goal_2) dailyGoalsSummary += `  3. ${goal.sub_goal_2}\n`;
+          dailyGoalsSummary += `  1. ${goal.goal1}\n`;
+          if (goal.goal2) dailyGoalsSummary += `  2. ${goal.goal2}\n`;
+          if (goal.goal3) dailyGoalsSummary += `  3. ${goal.goal3}\n`;
           dailyGoalsSummary += `  기분: ${goal.mood}\n\n`;
         }
         await thread.send(dailyGoalsSummary);
