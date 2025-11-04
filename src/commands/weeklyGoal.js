@@ -28,7 +28,7 @@ export default {
 				DO UPDATE SET goal = $3;
 			`;
 			await pool.query(query, [userId, guildId, goal]);
-			await interaction.reply({ content: '✅ 주간 목표가 성공적으로 설정되었습니다!', ephemeral: true });
+			await interaction.reply({ content: `✅ 주간 목표가 성공적으로 설정되었습니다!\n\n**나의 목표:** ${goal}` });
 		} catch (error) {
 			console.error('Error saving weekly goal:', error);
 			await interaction.reply({ content: '❌ 목표를 설정하는 중에 오류가 발생했습니다.', ephemeral: true });
