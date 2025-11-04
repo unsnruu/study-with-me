@@ -103,7 +103,7 @@ export default {
     }
 
     const replyContent = `
-**✨${user.username}님의 오늘의 목표✨**${weeklyGoalText}
+**✨<@${user.id}>님의 오늘의 목표✨**${weeklyGoalText}
 
 ${dailyGoalsText}
 
