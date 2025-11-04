@@ -23,25 +23,33 @@ export const dailyGoalThreadJob = {
       const dateString = `${today.getMonth() + 1}월 ${today.getDate()}일`;
 
       const thread = await channel.threads.create({
-        name: `🔥 ${dateString} | 오늘의 목표와 진행상황을 공유해주세요!`,
+        name: `🔥 ${dateString} | 오늘의 목표와 진행상황을 공유해주세요!`, 
       });
       
       await thread.send({ content: `@everyone 오늘의 목표를 공유하고 함께 달려봐요! 🔥` });
       console.log(`✅ ${thread.name} 스레드를 성공적으로 생성했습니다.`);
 
-      // DB에서 주간 목표 가져오기
+      // DB에서 오늘 설정된 일일 목표 가져오기
       const guildId = channel.guild.id;
-      const { rows } = await pool.query('SELECT user_id, goal FROM weekly_goals WHERE guild_id = $1', [guildId]);
+      const { rows: dailyGoals } = await pool.query(
+        'SELECT user_id, main_goal, sub_goal_1, sub_goal_2, mood FROM daily_goals WHERE guild_id = $1 AND created_at = CURRENT_DATE',
+        [guildId]
+      );
 
-      if (rows.length > 0) {
-        let goalMessages = '이번 주 목표를 설정한 멤버들의 목표입니다! 모두 화이팅! 💪\n\n';
-        for (const row of rows) {
-          goalMessages += `<@${row.user_id}>님의 목표: **${row.goal}**\n`;
+      if (dailyGoals.length > 0) {
+        let dailyGoalsSummary = '--- 오늘 목표를 설정한 멤버들 ---\n\n';
+        for (const goal of dailyGoals) {
+          dailyGoalsSummary += `<@${goal.user_id}>님의 목표:\n`;
+          dailyGoalsSummary += `  1. ${goal.main_goal}\n`;
+          if (goal.sub_goal_1) dailyGoalsSummary += `  2. ${goal.sub_goal_1}\n`;
+          if (goal.sub_goal_2) dailyGoalsSummary += `  3. ${goal.sub_goal_2}\n`;
+          dailyGoalsSummary += `  기분: ${goal.mood}\n\n`;
         }
-        await thread.send(goalMessages);
-        console.log(`✅ ${rows.length}명의 주간 목표를 스레드에 게시했습니다.`);
+        await thread.send(dailyGoalsSummary);
+        console.log(`✅ ${dailyGoals.length}명의 일일 목표를 스레드에 게시했습니다.`);
       } else {
-        console.log('게시할 주간 목표가 없습니다.');
+        await thread.send('오늘은 아직 일일 목표를 설정한 멤버가 없습니다. `/일일목표`로 목표를 설정해보세요!');
+        console.log('게시할 일일 목표가 없습니다.');
       }
 
     } catch (error) {
