@@ -8,8 +8,8 @@ const pool = new Pool({
 const channelId = process.env.DAILY_GOAL_CHANNEL_ID;
 
 export const dailyGoalThreadJob = {
-  // 매 30초마다 실행 (테스트용)
-  schedule: "*/30 * * * * *",
+  // 매주 월, 화, 목, 금 오전 9시 40분
+  schedule: "40 9 * * 1,2,4,5",
   async task(client) {
     console.log("⏰ 스레드 생성 및 목표 알림 작업을 시작합니다.");
     try {
