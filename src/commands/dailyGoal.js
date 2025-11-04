@@ -14,6 +14,29 @@ export default {
     .setDescriptionLocalizations({ ko: "오늘의 목표를 설정합니다." })
     .addStringOption((option) =>
       option
+        .setName("mood")
+        .setNameLocalizations({ ko: "기분" })
+        .setDescription("How you are feeling today.")
+        .setDescriptionLocalizations({ ko: "오늘의 기분입니다." })
+        .setRequired(true)
+        .addChoices(
+          {
+            name: "🔥 열정적으로 달릴 준비 완료!",
+            value: "🔥 열정적으로 달릴 준비 완료!",
+          },
+          {
+            name: "☕ 차분하고 집중 잘 될 것 같은 날",
+            value: "☕ 차분하고 집중 잘 될 것 같은 날",
+          },
+          { name: "😊 그냥 좋은 날", value: "😊 그냥 좋은 날" },
+          {
+            name: "🫠 조금 지쳤지만 힘내볼게요",
+            value: "🫠 조금 지쳤지만 힘내볼게요",
+          }
+        )
+    )
+    .addStringOption((option) =>
+      option
         .setName("goal1")
         .setNameLocalizations({ ko: "목표1" })
         .setDescription("Your first goal for today.")
@@ -35,29 +58,6 @@ export default {
         .setDescription("Your third goal for today (optional).")
         .setDescriptionLocalizations({ ko: "오늘의 세 번째 목표입니다. (선택 사항)" })
         .setRequired(false)
-    )
-    .addStringOption((option) =>
-      option
-        .setName("mood")
-        .setNameLocalizations({ ko: "기분" })
-        .setDescription("How you are feeling today.")
-        .setDescriptionLocalizations({ ko: "오늘의 기분입니다." })
-        .setRequired(true)
-        .addChoices(
-          {
-            name: "🔥 열정적으로 달릴 준비 완료!",
-            value: "🔥 열정적으로 달릴 준비 완료!",
-          },
-          {
-            name: "☕ 차분하고 집중 잘 될 것 같은 날",
-            value: "☕ 차분하고 집중 잘 될 것 같은 날",
-          },
-          { name: "😊 그냥 좋은 날", value: "😊 그냥 좋은 날" },
-          {
-            name: "🫠 조금 지쳤지만 힘내볼게요",
-            value: "🫠 조금 지쳤지만 힘내볼게요",
-          }
-        )
     ),
   async execute(interaction) {
     await interaction.deferReply();
