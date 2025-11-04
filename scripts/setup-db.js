@@ -24,9 +24,9 @@ const setupDatabase = async () => {
       CREATE TABLE IF NOT EXISTS daily_goals (
         user_id VARCHAR(255) NOT NULL,
         guild_id VARCHAR(255) NOT NULL,
-        main_goal TEXT NOT NULL,
-        sub_goal_1 TEXT,
-        sub_goal_2 TEXT,
+        goal1 TEXT NOT NULL,
+        goal2 TEXT,
+        goal3 TEXT,
         mood VARCHAR(255) NOT NULL,
         created_at DATE NOT NULL DEFAULT CURRENT_DATE,
         PRIMARY KEY (user_id, guild_id, created_at)

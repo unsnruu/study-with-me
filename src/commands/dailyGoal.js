@@ -14,15 +14,15 @@ export default {
     .setDescriptionLocalizations({ ko: "오늘의 목표를 설정합니다." })
     .addStringOption((option) =>
       option
-        .setName("main-goal")
+        .setName("goal1")
         .setNameLocalizations({ ko: "목표1" })
-        .setDescription("Your main goal for today.")
+        .setDescription("Your first goal for today.")
         .setDescriptionLocalizations({ ko: "오늘의 첫 번째 목표입니다." })
         .setRequired(true)
     )
     .addStringOption((option) =>
       option
-        .setName("sub-goal-1")
+        .setName("goal2")
         .setNameLocalizations({ ko: "목표2" })
         .setDescription("Your second goal for today (optional).")
         .setDescriptionLocalizations({ ko: "오늘의 두 번째 목표입니다. (선택 사항)" })
@@ -30,7 +30,7 @@ export default {
     )
     .addStringOption((option) =>
       option
-        .setName("sub-goal-2")
+        .setName("goal3")
         .setNameLocalizations({ ko: "목표3" })
         .setDescription("Your third goal for today (optional).")
         .setDescriptionLocalizations({ ko: "오늘의 세 번째 목표입니다. (선택 사항)" })
@@ -63,9 +63,9 @@ export default {
     await interaction.deferReply();
 
     const user = interaction.user;
-    const mainGoal = interaction.options.getString("main-goal");
-    const subGoal1 = interaction.options.getString("sub-goal-1");
-    const subGoal2 = interaction.options.getString("sub-goal-2");
+    const goal1 = interaction.options.getString("goal1");
+    const goal2 = interaction.options.getString("goal2");
+    const goal3 = interaction.options.getString("goal3");
     const mood = interaction.options.getString("mood");
     
     let weeklyGoal = '';
@@ -81,12 +81,12 @@ export default {
 
     try {
       const query = `
-        INSERT INTO daily_goals (user_id, guild_id, main_goal, sub_goal_1, sub_goal_2, mood)
+        INSERT INTO daily_goals (user_id, guild_id, goal1, goal2, goal3, mood)
         VALUES ($1, $2, $3, $4, $5, $6)
         ON CONFLICT (user_id, guild_id, created_at) DO UPDATE
-        SET main_goal = $3, sub_goal_1 = $4, sub_goal_2 = $5, mood = $6;
+        SET goal1 = $3, goal2 = $4, goal3 = $5, mood = $6;
       `;
-      await pool.query(query, [userId, guildId, mainGoal, subGoal1, subGoal2, mood]);
+      await pool.query(query, [user.id, interaction.guild.id, goal1, goal2, goal3, mood]);
     } catch (error) {
       console.error('Error saving daily goal:', error);
       // Continue with reply even if saving fails
@@ -94,12 +94,12 @@ export default {
 
     const weeklyGoalText = weeklyGoal ? `\n\n**📅 주간 목표: ${weeklyGoal}**` : '';
 
-    let dailyGoalsText = `**1. ${mainGoal}**`;
-    if (subGoal1) {
-      dailyGoalsText += `\n**2. ${subGoal1}**`;
+    let dailyGoalsText = `**1. ${goal1}**`;
+    if (goal2) {
+      dailyGoalsText += `\n**2. ${goal2}**`;
     }
-    if (subGoal2) {
-      dailyGoalsText += `\n**3. ${subGoal2}**`;
+    if (goal3) {
+      dailyGoalsText += `\n**3. ${goal3}**`;
     }
 
     const replyContent = `
