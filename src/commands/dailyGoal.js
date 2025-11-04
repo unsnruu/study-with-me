@@ -1,4 +1,10 @@
 import { SlashCommandBuilder } from "discord.js";
+import { Pool } from 'pg';
+import 'dotenv/config';
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 export default {
   data: new SlashCommandBuilder()
@@ -40,12 +46,25 @@ export default {
   async execute(interaction) {
     await interaction.deferReply();
 
-    const user = interaction.user; // Get user from the interaction itself
+    const user = interaction.user;
     const mainGoal = interaction.options.getString("main-goal");
     const mood = interaction.options.getString("mood");
+    
+    let weeklyGoal = '';
+    try {
+      const { rows } = await pool.query('SELECT goal FROM weekly_goals WHERE user_id = $1 AND guild_id = $2', [user.id, interaction.guild.id]);
+      if (rows.length > 0) {
+        weeklyGoal = rows[0].goal;
+      }
+    } catch (error) {
+      console.error('Error fetching weekly goal:', error);
+      // Continue without weekly goal if db query fails
+    }
+
+    const weeklyGoalText = weeklyGoal ? `\n\n**📅 주간 목표: ${weeklyGoal}**` : '';
 
     const replyContent = `
-**✨${user.username}님의 오늘의 목표✨**
+**✨${user.username}님의 오늘의 목표✨**${weeklyGoalText}
 
 **🎯 주요 목표: ${mainGoal}**
 
