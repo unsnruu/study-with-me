@@ -83,8 +83,8 @@ export default {
       const query = `
         INSERT INTO daily_goals (user_id, guild_id, goal1, goal2, goal3, mood)
         VALUES ($1, $2, $3, $4, $5, $6)
-        ON CONFLICT (user_id, guild_id, created_at) DO UPDATE
-        SET goal1 = $3, goal2 = $4, goal3 = $5, mood = $6;
+        ON CONFLICT ON CONSTRAINT daily_goals_pkey DO UPDATE
+        SET goal1 = EXCLUDED.goal1, goal2 = EXCLUDED.goal2, goal3 = EXCLUDED.goal3, mood = EXCLUDED.mood;
       `;
       await pool.query(query, [user.id, interaction.guild.id, goal1, goal2, goal3, mood]);
     } catch (error) {
