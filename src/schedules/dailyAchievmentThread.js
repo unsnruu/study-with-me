@@ -38,13 +38,13 @@ export const dailyAchievementThreadJob = {
       );
 
       if (dailyGoals.length > 0) {
-        let dailyGoalsSummary = "--- 오늘 목표를 설정한 멤버들 ---\n\n";
+        let dailyGoalsSummary = "**🔽 오늘 목표를 설정한 멤버들 🔽**\n\n";
         for (const goal of dailyGoals) {
           dailyGoalsSummary += `<@${goal.user_id}>님의 목표:\n`;
           dailyGoalsSummary += `1. ${goal.goal1}\n`;
           if (goal.goal2) dailyGoalsSummary += `2. ${goal.goal2}\n`;
           if (goal.goal3) dailyGoalsSummary += `3. ${goal.goal3}\n`;
-          dailyGoalsSummary += `  기분: ${goal.mood}\n\n`;
+          dailyGoalsSummary += `기분: ${goal.mood}\n\n`;
         }
         await thread.send(dailyGoalsSummary);
         console.log(
