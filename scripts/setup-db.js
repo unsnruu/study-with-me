@@ -1,11 +1,4 @@
-import pg from 'pg';
-const { Pool } = pg;
-import dotenv from 'dotenv';
-dotenv.config({ path: './.env' });
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+import pool from '../src/db.js';
 
 const setupDatabase = async () => {
   const client = await pool.connect();

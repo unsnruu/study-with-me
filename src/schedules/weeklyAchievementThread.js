@@ -1,9 +1,4 @@
-import { Pool } from "pg";
-import "dotenv/config";
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+import pool from "../db.js";
 
 const channelId = process.env.WEEKLY_ACHIEVEMENT_CHANNEL_ID;
 
